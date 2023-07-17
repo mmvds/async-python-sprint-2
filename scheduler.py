@@ -40,14 +40,16 @@ class Scheduler:
 
         for status, count in summary.items():
             logger.info(f'{status}: {count}')
+        return summary
 
     def run(self):
         while self.is_running:
             self.waiting_tasks = [task for task in self.tasks if task.state['status'] == 'waiting']
             if not self.waiting_tasks:
                 logger.info('All tasks were finished:')
-                self.generate_summary_table()
+                summary = self.generate_summary_table()
                 self.stop()
+                return summary
             else:
                 for task in self.waiting_tasks:
                     job_coroutine = task.run()

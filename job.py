@@ -54,6 +54,7 @@ class Job:
             'args': self.args,
             'kwargs': self.kwargs,
             'status': 'waiting',
+            'error': '',
             'start_at': 0.0,
             'end_at': 0.0,
             'remaining_restarts': self.tries,
@@ -119,13 +120,13 @@ class Job:
             self.state['status'] = 'completed'
             self.state['end_at'] = time.time()
             yield self.state
-        except (HTTPError, json.JSONDecodeError, IOError, FileNotFoundError, TypeError) as err:
+        except (HTTPError, json.JSONDecodeError, IOError, FileNotFoundError, TypeError, ValueError) as err:
             logging.error(f'{self.func_name} Job failed. Error:\n {str(err)}')
-            self.state['status'] = 'failed'
             self.state['error'] = str(err)
             if self.tries > 0:
                 yield self.restart()
             else:
+                self.state['status'] = 'failed'
                 yield self.state
 
     def restart(self):
