@@ -1,8 +1,7 @@
 import unittest
 import logging
-from unittest.mock import patch
 from datetime import datetime
-from job import Job, coroutine
+from job import Job
 from scheduler import Scheduler
 
 logging.basicConfig(level=logging.DEBUG)

@@ -1,10 +1,7 @@
 import json
-import os
 import time
-import requests
 import logging
 
-from functools import wraps
 from job import Job
 
 logger = logging.getLogger(__name__)
@@ -14,7 +11,8 @@ class Scheduler:
     """
     Class to schedule Job class tasks with some checks
     """
-    def __init__(self, pool_size=10):
+
+    def __init__(self, pool_size: int = 10):
         """
         param pool_size: max amount of tasks in Scheduler
         """
@@ -33,7 +31,7 @@ class Scheduler:
         else:
             logger.error(f'Cant add new task. Max number of tasks reached ({self.pool_size})')
 
-    def generate_summary_table(self):
+    def generate_summary_table(self) -> dict:
         summary = {}
         for task in self.tasks:
             summary[task.state['status']] = summary.get(task.state['status'], 0) + 1
@@ -42,7 +40,7 @@ class Scheduler:
             logger.info(f'{status}: {count}')
         return summary
 
-    def run(self):
+    def run(self) -> dict:
         while self.is_running:
             self.waiting_tasks = [task for task in self.tasks if task.state['status'] == 'waiting']
             if not self.waiting_tasks:

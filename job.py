@@ -2,7 +2,7 @@ import logging
 import time
 import json
 from functools import wraps
-from typing import Callable
+from typing import Optional, Callable
 from urllib.error import HTTPError
 
 
@@ -25,12 +25,12 @@ class Job:
     """
     def __init__(self,
                  func: Callable,
-                 args: tuple = None,
-                 kwargs: dict = None,
+                 args: Optional[tuple] = None,
+                 kwargs: Optional[dict] = None,
                  max_working_time: float = -1,
                  start_at: float = 0,
                  tries: int = 0,
-                 dependencies: list = None):
+                 dependencies: Optional[list] = None):
         """
         :param func: Callable object to run
         :param args: args of callable object

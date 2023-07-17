@@ -1,9 +1,9 @@
 import logging
 import os
-from job import Job
-from scheduler import Scheduler
 import requests
 from requests.exceptions import RequestException, HTTPError, ConnectionError
+from job import Job
+from scheduler import Scheduler
 
 logger = logging.getLogger(__name__)
 
